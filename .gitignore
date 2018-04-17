@@ -1,3 +1,5 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
 # Compiled source #
 ###################
 *.com
@@ -38,6 +40,8 @@ Thumbs.db
 #########
 target
 pom.xml.versionsBackup
+dependency-reduced-pom.xml
+**/target/
 
 # Eclipse #
 # based on https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore #
@@ -48,10 +52,12 @@ pom.xml.versionsBackup
 .springWebflow
 .metadata
 .springBeans
+**/.externalToolBuilders/
+*Servers/
 
 # JetBrains #
 # based on https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore #
-###########
+#######################################################################################
 *.iml
 .idea/
 *.ipr
@@ -64,7 +70,25 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Node/NPM/Yarn #
+#################
+node
+**/node/
+**/node_modules/
+
+# Bower #
+############
+**/bower/
+
+# Webpack #
+############
+**/dist/
+**/www/
+
 # Other #
 #########
 *.*~
 *.orig
+.gitconfig
+docker
+
