@@ -1,0 +1,22 @@
+# The spring-boot-devtools module includes an embedded LiveReload server
+# that can be used to trigger a browser refresh when a resource is changed.
+server:
+  port: 9090
+
+spring:
+  application:
+    name: Film Repository
+  banner:
+    location: classpath:banner.txt
+  devtools:
+    livereload:
+      enabled: false
+    remote:
+      restart:
+        enabled: false
+    restart:
+      additional-paths: ''
+  output:
+    ansi:
+      enabled: always
+

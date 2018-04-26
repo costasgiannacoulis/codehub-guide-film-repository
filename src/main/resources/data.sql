@@ -1,0 +1,1 @@
+-- In case of embedded databases, here is the place where the data loading should be described

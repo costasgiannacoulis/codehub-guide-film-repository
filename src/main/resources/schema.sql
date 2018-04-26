@@ -1,0 +1,1 @@
+-- In case of embedded databases, here is the place where the database structure definition should be described

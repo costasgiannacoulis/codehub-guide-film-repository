@@ -69,12 +69,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
-		-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -93,15 +91,9 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.json</include>
-					<include>**/*.yml</include>
 					<include>**/*.properties</include>
+					<include>**/*.yml</include>
 					<include>**/*.xml</include>
-					<include>**/*.csv</include>
-					<include>**/*.sql</include>
-					<include>**/*.html</include>
-					<include>**/*.txt</include>
-					<include>**/*.png</include>
 				</includes>
 			</resource>
 		</resources>
@@ -118,7 +110,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -184,6 +175,27 @@
 				<artifactId>versions-maven-plugin</artifactId>
 				<version>${versions-maven-plugin.version}</version>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.0.7</version>
+			</plugin>
 		</plugins>
+
+		<defaultGoal>package</defaultGoal>
 	</build>
+	<profiles>
+		<profile>
+			<id>java9</id>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
