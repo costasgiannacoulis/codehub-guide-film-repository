@@ -22,10 +22,10 @@ create table language (
 create table film (
 	id bigint not null primary key,
 	title varchar(50) not null,
-	description varchar(255) not null,
+	description varchar(255),
 	release integer not null,
 	language_id bigint not null,
-	length smallint not null,
+	length integer not null,
 	rating varchar(10)
 );
 
