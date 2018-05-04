@@ -124,6 +124,26 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M1</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.5</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>${maven-source-plugin.version}</version>
 				<configuration>
@@ -187,10 +207,31 @@
 				<artifactId>versions-maven-plugin</artifactId>
 				<version>${versions-maven-plugin.version}</version>
 			</plugin>
+			<!-- We need the plugin in order to be able to reset database. -->
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>5.0.7</version>
+				<!--
+				We need to define following parameters in a single place and reuse them here and in application
+				.properties
+				-->
+				<configuration>
+					<sqlMigrationSeparator>__</sqlMigrationSeparator>
+					<locations>
+						<location>filesystem:src/main/resources/db/migration</location>
+					</locations>
+					<url>jdbc:h2:file:~/filmdb;IFEXISTS=FALSE</url>
+					<user>sa</user>
+					<password></password>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.h2database</groupId>
+						<artifactId>h2</artifactId>
+						<version>1.4.196</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 
@@ -210,16 +251,16 @@
 			</dependencies>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>repo.maven</id>
-			<name>repo.maven</name>
-			<url>http://repo.maven.apache.org/maven2</url>
-		</repository>
-		<repository>
-			<id>repo.mvn</id>
-			<name>repo.mvn</name>
-			<url>https://mvnrepository.com/artifact</url>
-		</repository>
-	</repositories>
+	<!--<repositories>-->
+	<!--<repository>-->
+	<!--<id>repo.maven</id>-->
+	<!--<name>repo.maven</name>-->
+	<!--<url>http://repo.maven.apache.org/maven2</url>-->
+	<!--</repository>-->
+	<!--<repository>-->
+	<!--<id>repo.mvn</id>-->
+	<!--<name>repo.mvn</name>-->
+	<!--<url>https://mvnrepository.com/artifact</url>-->
+	<!--</repository>-->
+	<!--</repositories>-->
 </project>
