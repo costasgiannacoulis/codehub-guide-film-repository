@@ -11,6 +11,8 @@ public interface AbstractDomainService<T> {
 
 	void delete(T entity);
 
+	boolean exists(T entity);
+
 	T get(Long id);
 
 	List<T> findAll();
