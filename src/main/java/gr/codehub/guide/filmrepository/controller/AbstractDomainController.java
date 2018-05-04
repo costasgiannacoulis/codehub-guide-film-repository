@@ -19,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractDomainController<T> {
 	@GetMapping("/{id}")
 	public T get(@PathVariable("id") final Long id) {
-		final T actor = getDomainService().get(id);
-		log.debug(actor.toString());
-		return actor;
+		final T entity = getDomainService().get(id);
+		log.debug(entity.toString());
+		return entity;
 	}
 
 	public abstract AbstractDomainService<T> getDomainService();
@@ -32,13 +32,15 @@ public abstract class AbstractDomainController<T> {
 	}
 
 	@PostMapping
-	public void create(@Valid @RequestBody final T actor) {
-		getDomainService().create(actor);
+	public void create(@Valid @RequestBody final T entity) {
+		getDomainService().create(entity);
 	}
 
 	@PutMapping
-	public void update(@Valid @RequestBody final T actor) {
-		getDomainService().update(actor);
+	public void update(@Valid @RequestBody final T entity) {
+		if (getDomainService().exists(entity)) {
+			getDomainService().update(entity);
+		}
 	}
 
 	@DeleteMapping("/{id}")
@@ -47,12 +49,12 @@ public abstract class AbstractDomainController<T> {
 	}
 
 	@DeleteMapping
-	public void delete(@Valid @RequestBody final T actor) {
-		getDomainService().delete(actor);
+	public void delete(@Valid @RequestBody final T entity) {
+		getDomainService().delete(entity);
 	}
 
 	@PatchMapping("/{id}")
-	public void patch(@PathVariable("id") final Long id, @RequestBody final T actor) {
+	public void patch(@PathVariable("id") final Long id, @Valid @RequestBody final T entity) {
 		//TODO
 	}
 }
