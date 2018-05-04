@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<!-- Packaging -->
@@ -39,6 +39,7 @@
 		<maven-source-plugin.versio>3.0.1</maven-source-plugin.versio>
 		<maven-jgit-buildnumber-plugin.version>1.2.10</maven-jgit-buildnumber-plugin.version>
 		<maven-scm-plugin.version>1.9.5</maven-scm-plugin.version>
+		<jackson-datatype-hibernate5>2.9.5</jackson-datatype-hibernate5>
 	</properties>
 
 	<dependencies>
@@ -83,6 +84,14 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!--Project to build Jackson module (jar) to support JSON serialization and deserialization of Hibernate
+		(http://hibernate.org) specific datatypes and properties; especially lazy-loading aspects.-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<version>${jackson-datatype-hibernate5}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,6 +103,9 @@
 					<include>**/*.properties</include>
 					<include>**/*.yml</include>
 					<include>**/*.xml</include>
+					<include>**/*.sql</include>
+					<include>**/*.txt</include>
+					<include>**/*.csv</include>
 				</includes>
 			</resource>
 		</resources>
@@ -198,4 +210,16 @@
 			</dependencies>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>repo.maven</id>
+			<name>repo.maven</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>repo.mvn</id>
+			<name>repo.mvn</name>
+			<url>https://mvnrepository.com/artifact</url>
+		</repository>
+	</repositories>
 </project>
