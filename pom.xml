@@ -40,9 +40,32 @@
 		<maven-jgit-buildnumber-plugin.version>1.2.10</maven-jgit-buildnumber-plugin.version>
 		<maven-scm-plugin.version>1.9.5</maven-scm-plugin.version>
 		<jackson-datatype-hibernate5>2.9.5</jackson-datatype-hibernate5>
+		<disruptor.version>3.4.2</disruptor.version>
 	</properties>
 
 	<dependencies>
+		<!-- Change logging mechanism from Logback to Log4J2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<!-- Asynchronous Logging -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${disruptor.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -69,6 +92,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Needed for SMTP appender -->
+		<!--<dependency>-->
+		<!--<groupId>org.springframework.boot</groupId>-->
+		<!--<artifactId>spring-boot-starter-mail</artifactId>-->
+		<!--</dependency>-->
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -251,16 +280,4 @@
 			</dependencies>
 		</profile>
 	</profiles>
-	<!--<repositories>-->
-	<!--<repository>-->
-	<!--<id>repo.maven</id>-->
-	<!--<name>repo.maven</name>-->
-	<!--<url>http://repo.maven.apache.org/maven2</url>-->
-	<!--</repository>-->
-	<!--<repository>-->
-	<!--<id>repo.mvn</id>-->
-	<!--<name>repo.mvn</name>-->
-	<!--<url>https://mvnrepository.com/artifact</url>-->
-	<!--</repository>-->
-	<!--</repositories>-->
 </project>
