@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.repository.ActorRepository;
+import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
 
 @Service
 public class ActorServiceImpl implements ActorService {
@@ -57,5 +58,10 @@ public class ActorServiceImpl implements ActorService {
 				.orElseThrow(() -> new NullPointerException(String.format("Actor with id %d was not found.", id)));
 		}
 		return actorOptional.get();
+	}
+
+	@Override
+	public List<ActorFilmsPair> getNumOfFilmsPerActor() {
+		return actorRepository.getNumOfFilmsPerActor();
 	}
 }

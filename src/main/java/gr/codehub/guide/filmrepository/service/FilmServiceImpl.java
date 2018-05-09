@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import gr.codehub.guide.filmrepository.model.Film;
 import gr.codehub.guide.filmrepository.repository.FilmRepository;
+import gr.codehub.guide.filmrepository.transfer.FilmActorPair;
+import gr.codehub.guide.filmrepository.transfer.KeyValue;
 
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -57,5 +59,15 @@ public class FilmServiceImpl implements FilmService {
 				.orElseThrow(() -> new NullPointerException(String.format("Film with id %d was not found.", id)));
 		}
 		return filmOptional.get();
+	}
+
+	@Override
+	public List<KeyValue<Long, String>> getTitles() {
+		return filmRepository.getTitles();
+	}
+
+	@Override
+	public List<FilmActorPair> getNumOfActorsPerFilm() {
+		return filmRepository.getNumOfActorsPerFilm();
 	}
 }
