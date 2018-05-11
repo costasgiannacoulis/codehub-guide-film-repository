@@ -50,7 +50,9 @@ public abstract class AbstractDomainController<T> {
 
 	@DeleteMapping
 	public void delete(@Valid @RequestBody final T entity) {
-		getDomainService().delete(entity);
+		if (getDomainService().exists(entity)) {
+			getDomainService().delete(entity);
+		}
 	}
 
 	@PatchMapping("/{id}")
