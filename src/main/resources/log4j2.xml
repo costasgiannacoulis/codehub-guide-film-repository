@@ -31,7 +31,7 @@
 				<Pattern>${LOG_PATTERN}</Pattern>
 			</PatternLayout>
 			<Policies>
-				<SizeBasedTriggeringPolicy size="1MB" />
+				<SizeBasedTriggeringPolicy size="10MB" />
 			</Policies>
 			<DefaultRolloverStrategy max="30" />
 		</RollingRandomAccessFile>
@@ -56,6 +56,10 @@
 
 	<Loggers>
 		<AsyncLogger name="org.hibernate.SQL" level="info" additivity="false">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="RollingRandomAccessFileAppender" />
+		</AsyncLogger>
+		<AsyncLogger name="org.springframework.security" level="info" additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="RollingRandomAccessFileAppender" />
 		</AsyncLogger>
