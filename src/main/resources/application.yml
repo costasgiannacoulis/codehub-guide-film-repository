@@ -20,7 +20,3 @@ spring:
   output:
     ansi:
       enabled: always
-#  security:
-#    user:
-#      name: acmeuser
-#      password: pass1234
