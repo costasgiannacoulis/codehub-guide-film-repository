@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class FilmRepositoryApplication {
-
 	/**
 	 * Application launcher method
 	 *
