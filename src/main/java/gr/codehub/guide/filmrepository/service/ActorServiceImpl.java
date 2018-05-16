@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.repository.ActorRepository;
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
@@ -55,7 +56,7 @@ public class ActorServiceImpl implements ActorService {
 
 		if (!actorOptional.isPresent()) {
 			actorOptional
-				.orElseThrow(() -> new NullPointerException(String.format("Actor with id %d was not found.", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Actor with id %d was not found.", id)));
 		}
 		return actorOptional.get();
 	}

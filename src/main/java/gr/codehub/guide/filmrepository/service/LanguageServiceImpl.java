@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Language;
 import gr.codehub.guide.filmrepository.repository.LanguageRepository;
 
@@ -54,7 +55,8 @@ public class LanguageServiceImpl implements LanguageService {
 
 		if (!languageOptional.isPresent()) {
 			languageOptional
-				.orElseThrow(() -> new NullPointerException(String.format("Language with id %d was not found.", id)));
+				.orElseThrow(
+					() -> new ResourceNotFoundException(String.format("Language with id %d was not found.", id)));
 		}
 		return languageOptional.get();
 	}

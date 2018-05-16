@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Category;
 import gr.codehub.guide.filmrepository.repository.CategoryRepository;
 
@@ -54,7 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 		if (!categoryOptional.isPresent()) {
 			categoryOptional
-				.orElseThrow(() -> new NullPointerException(String.format("Category with id %d was not found.", id)));
+				.orElseThrow(
+					() -> new ResourceNotFoundException(String.format("Category with id %d was not found.", id)));
 		}
 		return categoryOptional.get();
 	}
