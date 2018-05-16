@@ -55,7 +55,7 @@
 	</Appenders>
 
 	<Loggers>
-		<AsyncLogger name="org.hibernate.SQL" level="info" additivity="false">
+		<AsyncLogger name="gr.codehub.guide.filmrepository" level="debug" additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="RollingRandomAccessFileAppender" />
 		</AsyncLogger>
@@ -64,6 +64,10 @@
 			<AppenderRef ref="RollingRandomAccessFileAppender" />
 		</AsyncLogger>
 		<AsyncLogger name="com.zaxxer.hikari" level="info" additivity="false">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="RollingRandomAccessFileAppender" />
+		</AsyncLogger>
+		<AsyncLogger name="org.hibernate.SQL" level="info" additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="RollingRandomAccessFileAppender" />
 		</AsyncLogger>
