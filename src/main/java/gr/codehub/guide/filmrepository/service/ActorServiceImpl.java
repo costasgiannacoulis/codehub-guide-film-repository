@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
@@ -17,8 +18,8 @@ public class ActorServiceImpl implements ActorService {
 	ActorRepository actorRepository;
 
 	@Override
-	public void create(final Actor actor) {
-		actorRepository.save(actor);
+	public Actor create(final Actor actor) {
+		return actorRepository.save(actor);
 	}
 
 	@Override
@@ -28,7 +29,11 @@ public class ActorServiceImpl implements ActorService {
 
 	@Override
 	public void delete(final Long id) {
-		actorRepository.deleteById(id);
+		try {
+			actorRepository.deleteById(id);
+		} catch (final EmptyResultDataAccessException er) {
+			throw new ResourceNotFoundException(String.format("Actor with id %d was not found.", id));
+		}
 	}
 
 	@Override

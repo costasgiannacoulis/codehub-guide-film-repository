@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
@@ -16,8 +17,8 @@ public class CategoryServiceImpl implements CategoryService {
 	CategoryRepository categoryRepository;
 
 	@Override
-	public void create(final Category category) {
-		categoryRepository.save(category);
+	public Category create(final Category category) {
+		return categoryRepository.save(category);
 	}
 
 	@Override
@@ -27,7 +28,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void delete(final Long id) {
-		categoryRepository.deleteById(id);
+		try {
+			categoryRepository.deleteById(id);
+		} catch (final EmptyResultDataAccessException er) {
+			throw new ResourceNotFoundException(String.format("Category with id %d was not found.", id));
+		}
 	}
 
 	@Override
