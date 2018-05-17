@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,12 +30,14 @@ public class Film implements Serializable {
 	@SequenceGenerator(name = "filmSequence", sequenceName = "film_seq", allocationSize = 1)
 	private Long id;
 
+	@Size(min = 3, message = "Film title should be at least 3 characters long")
 	@Column(length = 50, nullable = false)
 	private String title;
 
 	@Column(length = 255)
 	private String description;
 
+	@Min(value = 1900, message = "There were no films before 1900")
 	@Column(nullable = false)
 	private int release;
 
