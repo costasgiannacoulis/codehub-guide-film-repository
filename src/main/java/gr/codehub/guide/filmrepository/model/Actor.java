@@ -13,6 +13,7 @@ import javax.persistence.NamedNativeQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
+import javax.validation.constraints.Size;
 
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
 import lombok.Data;
@@ -45,9 +46,11 @@ public class Actor implements Serializable {
 	@SequenceGenerator(name = "actorSequence", sequenceName = "actor_seq", allocationSize = 1)
 	private Long id;
 
+	@Size(min = 3, message = "Firstname should have at least 3 characters")
 	@Column(length = 20, nullable = false)
 	private String firstName;
 
+	@Size(min = 3, message = "Lastname should have at least 3 characters")
 	@Column(length = 30, nullable = false)
 	private String lastName;
 }

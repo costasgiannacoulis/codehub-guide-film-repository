@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Film;
 import gr.codehub.guide.filmrepository.repository.FilmRepository;
 import gr.codehub.guide.filmrepository.transfer.FilmActorPair;
@@ -17,8 +19,8 @@ public class FilmServiceImpl implements FilmService {
 	FilmRepository filmRepository;
 
 	@Override
-	public void create(final Film film) {
-		filmRepository.save(film);
+	public Film create(final Film film) {
+		return filmRepository.save(film);
 	}
 
 	@Override
@@ -28,7 +30,11 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public void delete(final Long id) {
-		filmRepository.deleteById(id);
+		try {
+			filmRepository.deleteById(id);
+		} catch (final EmptyResultDataAccessException er) {
+			throw new ResourceNotFoundException(String.format("Film with id %d was not found.", id));
+		}
 	}
 
 	@Override
@@ -56,7 +62,7 @@ public class FilmServiceImpl implements FilmService {
 
 		if (!filmOptional.isPresent()) {
 			filmOptional
-				.orElseThrow(() -> new NullPointerException(String.format("Film with id %d was not found.", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Film with id %d was not found.", id)));
 		}
 		return filmOptional.get();
 	}

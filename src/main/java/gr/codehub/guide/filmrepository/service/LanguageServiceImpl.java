@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Language;
 import gr.codehub.guide.filmrepository.repository.LanguageRepository;
 
@@ -15,8 +17,8 @@ public class LanguageServiceImpl implements LanguageService {
 	LanguageRepository languageRepository;
 
 	@Override
-	public void create(final Language language) {
-		languageRepository.save(language);
+	public Language create(final Language language) {
+		return languageRepository.save(language);
 	}
 
 	@Override
@@ -26,7 +28,11 @@ public class LanguageServiceImpl implements LanguageService {
 
 	@Override
 	public void delete(final Long id) {
-		languageRepository.deleteById(id);
+		try {
+			languageRepository.deleteById(id);
+		} catch (final EmptyResultDataAccessException er) {
+			throw new ResourceNotFoundException(String.format("Language with id %d was not found.", id));
+		}
 	}
 
 	@Override
@@ -54,7 +60,8 @@ public class LanguageServiceImpl implements LanguageService {
 
 		if (!languageOptional.isPresent()) {
 			languageOptional
-				.orElseThrow(() -> new NullPointerException(String.format("Language with id %d was not found.", id)));
+				.orElseThrow(
+					() -> new ResourceNotFoundException(String.format("Language with id %d was not found.", id)));
 		}
 		return languageOptional.get();
 	}
