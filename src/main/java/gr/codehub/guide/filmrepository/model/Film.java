@@ -18,12 +18,17 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+// Static filtering demo case. These attributes will be ignored during JSON representation generation.
+// @JsonIgnoreProperties(value = {"actors", "categories"})
+@JsonFilter("basicFilter")
 public class Film implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "filmSequence")
@@ -51,11 +56,13 @@ public class Film implements Serializable {
 	@Column(length = 15, nullable = false)
 	private String rating;
 
-	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
 	@JoinTable(name = "film_actor",
 		joinColumns = @JoinColumn(name = "film_id"),
 		inverseJoinColumns = @JoinColumn(name = "actor_id")
 	)
+	// StaticFiltering
+	// @JsonIgnore
 	private Set<Actor> actors;
 
 	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
