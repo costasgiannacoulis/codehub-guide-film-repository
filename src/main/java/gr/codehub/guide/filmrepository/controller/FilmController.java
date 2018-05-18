@@ -60,9 +60,9 @@ public class FilmController extends AbstractDomainController<Film> {
 	}
 
 	/**
-	 * Demonstration of dynamic filtering case no1
+	 * Demonstration of dynamic filtering case no1.
 	 *
-	 * @return the filtered list of films based on given criteria
+	 * @return the filtered list of films based on given criteria.
 	 */
 	@GetMapping(headers = "action=filterFilmsNoDependants")
 	public MappingJacksonValue filterFilmsNoDependants() {
@@ -74,9 +74,9 @@ public class FilmController extends AbstractDomainController<Film> {
 	}
 
 	/**
-	 * Demonstration of dynamic filtering case no2
+	 * Demonstration of dynamic filtering case no2.
 	 *
-	 * @return the filtered list of films based on given criteria
+	 * @return the filtered list of films based on given criteria.
 	 */
 	@GetMapping(headers = "action=filterFilmsBasicInfo")
 	public MappingJacksonValue filterFilmsBasicInfo() {
@@ -87,14 +87,15 @@ public class FilmController extends AbstractDomainController<Film> {
 	}
 
 	/**
-	 * @param films
-	 * @param exposedFields
+	 * Defines filter and set included attributes.
+	 * @param films The list of {@link Film} to be filtered.
+	 * @param attributes The attributes to include in the filter.
 	 *
-	 * @return
+	 * @return The list of {@link Film} filtered.
 	 */
-	private MappingJacksonValue getMappingJacksonValue(final List<Film> films, final String... exposedFields) {
+	private MappingJacksonValue getMappingJacksonValue(final List<Film> films, final String... attributes) {
 		final SimpleBeanPropertyFilter filter =
-			SimpleBeanPropertyFilter.filterOutAllExcept(exposedFields);
+			SimpleBeanPropertyFilter.filterOutAllExcept(attributes);
 		final FilterProvider filters = new SimpleFilterProvider().addFilter("basicFilter", filter);
 		final MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(films);
 		mappingJacksonValue.setFilters(filters);
