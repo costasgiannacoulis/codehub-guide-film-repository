@@ -41,6 +41,7 @@
 		<maven-scm-plugin.version>1.9.5</maven-scm-plugin.version>
 		<jackson-datatype-hibernate5>2.9.5</jackson-datatype-hibernate5>
 		<disruptor.version>3.4.2</disruptor.version>
+		<native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -128,28 +129,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.yml</include>
-					<include>**/*.xml</include>
-					<include>**/*.sql</include>
-					<include>**/*.txt</include>
-					<include>**/*.csv</include>
-				</includes>
-			</resource>
-		</resources>
-
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -171,6 +150,26 @@
 									<version>3.5</version>
 								</requireMavenVersion>
 							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>native2ascii-maven-plugin</artifactId>
+				<version>${native2ascii-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>native2ascii-utf8-resources</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<configuration>
+							<srcDir>src/main/resources</srcDir>
+							<targetDir>${project.build.outputDirectory}</targetDir>
+							<encoding>UTF8</encoding>
+							<includes>**/*.properties</includes>
 						</configuration>
 					</execution>
 				</executions>
@@ -269,6 +268,28 @@
 		</plugins>
 
 		<defaultGoal>package</defaultGoal>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<include>**/*.sql</include>
+					<include>**/*.csv</include>
+					<include>**/*.txt</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 	</build>
 	<profiles>
 		<profile>
