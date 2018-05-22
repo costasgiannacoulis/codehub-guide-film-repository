@@ -25,11 +25,13 @@ import gr.codehub.guide.filmrepository.service.AbstractDomainService;
 import gr.codehub.guide.filmrepository.service.FilmService;
 import gr.codehub.guide.filmrepository.transfer.FilmActorPair;
 import gr.codehub.guide.filmrepository.transfer.KeyValue;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller servicing all {@link Film} related calls.
  */
 @RestController
+@Slf4j
 public class FilmController extends AbstractDomainController<Film> {
 	@Autowired
 	FilmService service;
@@ -110,12 +112,37 @@ public class FilmController extends AbstractDomainController<Film> {
 	}
 
 	/**
-	 * Demonstration of returning DTOs regarding the number actors per {@link Film}.
+	 * Demonstration of returning DTOs regarding the number actors per {@link Film}. Implement versioning via URI path.
 	 *
 	 * @return list of DTOs.
 	 */
 	@GetMapping(value = "/films/v1", headers = "action=getNumOfActorsPerFilm")
 	public List<FilmActorPair> getNumOfActorsPerFilm() {
+		log.info("called getNumOfActorsPerFilm via URI path versioning");
+		return service.getNumOfActorsPerFilm();
+	}
+
+	/**
+	 * Demonstration of returning DTOs regarding the number actors per {@link Film}. Implement versioning via headers.
+	 *
+	 * @return list of DTOs.
+	 */
+	@GetMapping(value = "/films", headers = {"action=getNumOfActorsPerFilm", "X-API-VERSION=1"})
+	public List<FilmActorPair> getNumOfActorsPerFilmViaHeaders() {
+		log.info("called getNumOfActorsPerFilm via header versioning");
+		return service.getNumOfActorsPerFilm();
+	}
+
+	/**
+	 * Demonstration of returning DTOs regarding the number actors per {@link Film}. Implement versioning via
+	 * content type.
+	 *
+	 * @return list of DTOs.
+	 */
+	@GetMapping(value = "/films", produces = "application/vnd.acme.film-v1+json", headers =
+		"action=getNumOfActorsPerFilm")
+	public List<FilmActorPair> getNumOfActorsPerFilmViaContentType() {
+		log.info("called getNumOfActorsPerFilm via content type versioning");
 		return service.getNumOfActorsPerFilm();
 	}
 
