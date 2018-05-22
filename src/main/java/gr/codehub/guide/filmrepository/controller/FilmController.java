@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,19 +26,69 @@ import gr.codehub.guide.filmrepository.service.FilmService;
 import gr.codehub.guide.filmrepository.transfer.FilmActorPair;
 import gr.codehub.guide.filmrepository.transfer.KeyValue;
 
+/**
+ * Controller servicing all {@link Film} related calls.
+ */
 @RestController
-@RequestMapping("/films")
 public class FilmController extends AbstractDomainController<Film> {
 	@Autowired
 	FilmService service;
 
+	/**
+	 * Injecting the corresponding business service.
+	 *
+	 * @return The business service.
+	 */
 	@Override
 	public AbstractDomainService<Film> getDomainService() {
 		return service;
 	}
 
+	/**
+	 * Get's the {@link Film} object with the given id.
+	 * <br><br>
+	 * Note:<br>
+	 * Under normal circumstances, we do not need to override this method. This is happening because we have
+	 * hardcoded the annotation @JsonFilter to {@link Film} class and we need to always enable dynamic filtering. In
+	 * case you need to change returned http status, use @ResponseStatus annotation.
+	 *
+	 * @param id The {@link Film} id.
+	 *           * @return The {@link Film} retrieved
+	 */
+	@GetMapping("/films/v1/{id}")
+	public MappingJacksonValue getFiltered(@PathVariable("id") final Long id) {
+		final Film film = getDomainService().get(id);
+		final MappingJacksonValue mappingJacksonValue = getMappingJacksonValue(film);
+
+		return mappingJacksonValue;
+	}
+
+	/**
+	 * Get's the entire list of {@link Film films}.
+	 * <br><br>
+	 * Note:<br>
+	 * Under normal circumstances, we do not need to override this method. This is happening because we have
+	 * hardcoded the annotation @JsonFilter to {@link Film} class and we need to always enable dynamic filtering. In
+	 * case you need to change returned http status, use @ResponseStatus annotation.
+	 *
+	 * @return The list of {@link Film} retrieved
+	 */
+	@GetMapping("/films/v1")
+	public MappingJacksonValue findAllFiltered() {
+		final List<Film> films = getDomainService().findAll();
+		final MappingJacksonValue mappingJacksonValue = getMappingJacksonValue(films);
+
+		return mappingJacksonValue;
+	}
+
+	/**
+	 * Creates a new {@link Film}.
+	 *
+	 * @param entity the object to use as feed.
+	 * @return the newly created {@link Film}.
+	 */
 	@Override
-	@PostMapping
+	@PostMapping("/films/v1")
 	public ResponseEntity create(@Valid @RequestBody final Film entity) {
 		final Film savedEntity = getDomainService().create(entity);
 		final URI location = ServletUriComponentsBuilder
@@ -49,12 +99,22 @@ public class FilmController extends AbstractDomainController<Film> {
 		return ResponseEntity.created(location).build();
 	}
 
-	@GetMapping(headers = "action=getTitles")
+	/**
+	 * Demonstration of returning key-value information regarding the number actors per {@link Film}.
+	 *
+	 * @return list of key-value structure.
+	 */
+	@GetMapping(value = "/films/v1", headers = "action=getTitles")
 	public ResponseEntity<List<KeyValue<Long, String>>> getTitles() {
 		return new ResponseEntity<>(service.getTitles(), HttpStatus.OK);
 	}
 
-	@GetMapping(headers = "action=getNumOfActorsPerFilm")
+	/**
+	 * Demonstration of returning DTOs regarding the number actors per {@link Film}.
+	 *
+	 * @return list of DTOs.
+	 */
+	@GetMapping(value = "/films/v1", headers = "action=getNumOfActorsPerFilm")
 	public List<FilmActorPair> getNumOfActorsPerFilm() {
 		return service.getNumOfActorsPerFilm();
 	}
@@ -64,7 +124,7 @@ public class FilmController extends AbstractDomainController<Film> {
 	 *
 	 * @return the filtered list of films based on given criteria.
 	 */
-	@GetMapping(headers = "action=filterFilmsNoDependants")
+	@GetMapping(value = "/films/v1", headers = "action=filterFilmsNoDependants")
 	public MappingJacksonValue filterFilmsNoDependants() {
 		final List<Film> films = getDomainService().findAll();
 		final MappingJacksonValue mappingJacksonValue = getMappingJacksonValue(films, "id", "title", "description",
@@ -78,7 +138,7 @@ public class FilmController extends AbstractDomainController<Film> {
 	 *
 	 * @return the filtered list of films based on given criteria.
 	 */
-	@GetMapping(headers = "action=filterFilmsBasicInfo")
+	@GetMapping(value = "/films/v2", headers = "action=filterFilmsBasicInfo")
 	public MappingJacksonValue filterFilmsBasicInfo() {
 		final List<Film> films = getDomainService().findAll();
 		final MappingJacksonValue mappingJacksonValue = getMappingJacksonValue(films, "title", "release");
@@ -93,9 +153,14 @@ public class FilmController extends AbstractDomainController<Film> {
 	 *
 	 * @return The list of {@link Film} filtered.
 	 */
-	private MappingJacksonValue getMappingJacksonValue(final List<Film> films, final String... attributes) {
-		final SimpleBeanPropertyFilter filter =
-			SimpleBeanPropertyFilter.filterOutAllExcept(attributes);
+	private MappingJacksonValue getMappingJacksonValue(final Object films, final String... attributes) {
+		SimpleBeanPropertyFilter filter = null;
+		if (attributes.length > 0) {
+			filter = SimpleBeanPropertyFilter.filterOutAllExcept(attributes);
+		} else {
+			filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "description",
+				"release", "language",  "length", "rating", "actors", "categories");
+		}
 		final FilterProvider filters = new SimpleFilterProvider().addFilter("basicFilter", filter);
 		final MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(films);
 		mappingJacksonValue.setFilters(filters);
