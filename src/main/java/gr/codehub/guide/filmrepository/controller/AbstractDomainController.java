@@ -16,30 +16,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import gr.codehub.guide.filmrepository.service.AbstractDomainService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+/**
+ * Abstract controller class declaring basic actions for all underlying entities.
+ *
+ * @param <T> The entity who's calls to serve.
+ */
 public abstract class AbstractDomainController<T> {
+	/**
+	 * Return the actual business service corresponding to the given entity.
+	 *
+	 * @return The business service.
+	 */
 	public abstract AbstractDomainService<T> getDomainService();
 
+	/**
+	 * Gets the entity matching the given id.
+
+	 * @param id The id who's entity to look for.
+	 * @return the entity.
+	 */
 	@GetMapping("/{id}")
 	public T get(@PathVariable("id") final Long id) {
-		final T entity = getDomainService().get(id);
-		log.debug("Returning as REST output: " + entity.toString());
-		return entity;
+		return getDomainService().get(id);
 	}
 
+	/**
+	 * Gets the entire list of entities.
+
+	 * @return the list of entities.
+	 */
 	@GetMapping
 	public List<T> findAll() {
 		return getDomainService().findAll();
 	}
 
+	/**
+	 * Creates a new entity.
+	 * @param entity The entity's body without id.
+
+	 * @return the newly created entity.
+	 */
 	@PostMapping
 	public ResponseEntity<T> create(@Valid @RequestBody final T entity) {
 		final T savedEntity = getDomainService().create(entity);
 		return new ResponseEntity<>(savedEntity, HttpStatus.CREATED);
 	}
 
+	/**
+	 * Updates given entity ntity.
+	 * @param entity The entity to update
+
+	 * @return the updated entity.
+	 */
 	@PutMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@Valid @RequestBody final T entity) {
@@ -48,12 +77,22 @@ public abstract class AbstractDomainController<T> {
 		}
 	}
 
+	/**
+	 * Deletes the entity associate with the given id.
+	 *
+	 * @param id the id who's corresponding entity we want to delete.
+	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") final Long id) {
 		getDomainService().delete(id);
 	}
 
+	/**
+	 * Deletes the entity.
+	 *
+	 * @param entity The entity to delete.
+	 */
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@Valid @RequestBody final T entity) {
@@ -62,8 +101,13 @@ public abstract class AbstractDomainController<T> {
 		}
 	}
 
+	/**
+	 * Patches the entity.
+	 *
+	 * @param entity the entity to patch.
+	 */
 	@PatchMapping("/{id}")
-	public void patch(@PathVariable("id") final Long id, @Valid @RequestBody final T entity) {
+	public void patch(@Valid @RequestBody final T entity) {
 		//TODO
 	}
 }
