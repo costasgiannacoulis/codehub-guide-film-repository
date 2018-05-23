@@ -37,19 +37,31 @@ import lombok.NoArgsConstructor;
 	)
 })
 
+/**
+ * The Actor entity.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 public class Actor implements Serializable {
+	/**
+	 * Actor's unique id.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actorSequence")
 	@SequenceGenerator(name = "actorSequence", sequenceName = "actor_seq", allocationSize = 1)
 	private Long id;
 
+	/**
+	 * Actor's firstname.
+	 */
 	@Size(min = 3, message = "Firstname should have at least 3 characters")
 	@Column(length = 20, nullable = false)
 	private String firstName;
 
+	/**
+	 * Actor's lastname.
+	 */
 	@Size(min = 3, message = "Lastname should have at least 3 characters")
 	@Column(length = 30, nullable = false)
 	private String lastName;

@@ -13,15 +13,24 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The Category entity.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 public class Category implements Serializable {
+	/**
+	 * Category's unique id.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categorySequence")
 	@SequenceGenerator(name = "categorySequence", sequenceName = "category_seq", allocationSize = 1)
 	private Long id;
 
+	/**
+	 * Category's name.
+	 */
 	@Size(min = 3, message = "Category title should be at least 3 characters long")
 	@Column(length = 50, nullable = false)
 	private String name;
