@@ -11,6 +11,9 @@ import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Category;
 import gr.codehub.guide.filmrepository.repository.CategoryRepository;
 
+/**
+ * Implementation of Category specific business calls.
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 	@Autowired
@@ -55,6 +58,13 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findAll();
 	}
 
+	/**
+	 * Gets and return the {@link Category} matching the given id, otherwise there's an exception thrown.
+	 *
+	 * @param id The id whose matching {@link Category} we are seeking for.
+	 *
+	 * @return the matching {@link Category}.
+	 */
 	private Category locate(final Long id) {
 		final Optional<Category> categoryOptional = categoryRepository.findById(id);
 

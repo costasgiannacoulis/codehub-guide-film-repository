@@ -12,8 +12,14 @@ import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.repository.ActorRepository;
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
 
+/**
+ * Implementation of Actor specific business calls.
+ */
 @Service
 public class ActorServiceImpl implements ActorService {
+	/**
+	 * Actor specific repository.
+	 */
 	@Autowired
 	ActorRepository actorRepository;
 
@@ -56,6 +62,12 @@ public class ActorServiceImpl implements ActorService {
 		return actorRepository.findAll();
 	}
 
+	/**
+	 * Gets and return the {@link Actor} matching the given id, otherwise there's an exception thrown.
+
+	 * @param id The id whose matching {@link Actor} we are seeking for.
+	 * @return the matching {@link Actor}.
+	 */
 	private Actor locate(final Long id) {
 		final Optional<Actor> actorOptional = actorRepository.findById(id);
 

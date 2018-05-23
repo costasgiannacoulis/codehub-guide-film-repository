@@ -11,6 +11,9 @@ import gr.codehub.guide.filmrepository.exception.ResourceNotFoundException;
 import gr.codehub.guide.filmrepository.model.Language;
 import gr.codehub.guide.filmrepository.repository.LanguageRepository;
 
+/**
+ * Implementation of Language specific business calls.
+ */
 @Service
 public class LanguageServiceImpl implements LanguageService {
 	@Autowired
@@ -55,6 +58,13 @@ public class LanguageServiceImpl implements LanguageService {
 		return languageRepository.findAll();
 	}
 
+	/**
+	 * Gets and return the {@link Language} matching the given id, otherwise there's an exception thrown.
+	 *
+	 * @param id The id whose matching {@link Language} we are seeking for.
+	 *
+	 * @return the matching {@link Language}.
+	 */
 	private Language locate(final Long id) {
 		final Optional<Language> languageOptional = languageRepository.findById(id);
 

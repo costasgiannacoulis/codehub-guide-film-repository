@@ -13,6 +13,9 @@ import gr.codehub.guide.filmrepository.repository.FilmRepository;
 import gr.codehub.guide.filmrepository.transfer.FilmActorPair;
 import gr.codehub.guide.filmrepository.transfer.KeyValue;
 
+/**
+ * Implementation of Film specific business calls.
+ */
 @Service
 public class FilmServiceImpl implements FilmService {
 	@Autowired
@@ -57,6 +60,13 @@ public class FilmServiceImpl implements FilmService {
 		return filmRepository.findAll();
 	}
 
+	/**
+	 * Gets and return the {@link Film} matching the given id, otherwise there's an exception thrown.
+	 *
+	 * @param id The id whose matching {@link Film} we are seeking for.
+	 *
+	 * @return the matching {@link Film}.
+	 */
 	private Film locate(final Long id) {
 		final Optional<Film> filmOptional = filmRepository.findById(id);
 
