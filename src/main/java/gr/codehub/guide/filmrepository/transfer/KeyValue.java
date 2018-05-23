@@ -7,6 +7,12 @@ import lombok.Value;
  */
 @Value
 public class KeyValue<K, V> {
+	/**
+	 * The generic key.
+	 */
 	K key;
+	/**
+	 * The generic value.
+	 */
 	V value;
 }
