@@ -1,5 +1,7 @@
 package gr.codehub.guide.filmrepository.config;
 
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,10 +10,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
+/**
+ * Security configuration.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -55,6 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.withUser("acmeuser").password("pass1234").roles("USER");
 	}
 
+	/**
+	 * Alternative way of excluding GET methods from authentication.
+	 *
+	 * @param web The {@link WebSecurity} is created by {@link WebSecurityConfiguration} to create the
+	 *            {@link FilterChainProxy} known as the Spring Security Filter Chain
+	 *            (springSecurityFilterChain). The springSecurityFilterChain is the {@link Filter} that
+	 *            the {@link DelegatingFilterProxy} delegates to.
+	 */
 	@Override
 	public void configure(final WebSecurity web) {
 		/* Use either this way or the way described in the following method. Both are redundant. */
@@ -63,6 +79,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET);
 	}
 
+	/**
+	 * Demonstanting basic security setup by allowing only GET requests to be served without providing credentials.
+	 *
+	 * @param http A {@link HttpSecurity} is similar to Spring Security's XML &lt;http&gt; element in the
+	 *             namespace configuration. It allows configuring web based security for specific http
+	 *             requests.
+	 *
+	 * @throws Exception if the configuration is not valid.
+	 */
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http

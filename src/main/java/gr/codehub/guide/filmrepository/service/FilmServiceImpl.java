@@ -21,16 +21,33 @@ public class FilmServiceImpl implements FilmService {
 	@Autowired
 	FilmRepository filmRepository;
 
+	/**
+	 * Creates a {@link Film}.
+	 *
+	 * @param film the entity to create and persist.
+	 *
+	 * @return the entity created.
+	 */
 	@Override
 	public Film create(final Film film) {
 		return filmRepository.save(film);
 	}
 
+	/**
+	 * Updates given {@link Film}.
+	 *
+	 * @param film the entity to update and persist.
+	 */
 	@Override
 	public void update(final Film film) {
 		filmRepository.save(film);
 	}
 
+	/**
+	 * Deletes {@link Film} whose associated id is provided.
+	 *
+	 * @param id the id whose corresponding entity we want to delete.
+	 */
 	@Override
 	public void delete(final Long id) {
 		try {
@@ -40,21 +57,40 @@ public class FilmServiceImpl implements FilmService {
 		}
 	}
 
+	/**
+	 * Deletes given {@link Film}.
+	 */
 	@Override
 	public void delete(final Film film) {
 		filmRepository.delete(film);
 	}
 
+	/**
+	 * Check the existence of the given {@link Film}.
+	 *
+	 * @param film the entity to check.
+	 * @return true if entity exists, false otherwise.
+	 */
 	@Override
 	public boolean exists(final Film film) {
 		return locate(film.getId()) != null;
 	}
 
+	/**
+	 * Retrieve the {@link Film} associated with the given id.
+	 *
+	 * @param id the id whose corresponding entity we want to retrieve.
+	 * @return the entity retrieved.
+	 */
 	@Override
 	public Film get(final Long id) {
 		return locate(id);
 	}
 
+	/**
+	 * Find all {@link Film films}.
+	 * @return the list of {@link Film films}.
+	 */
 	@Override
 	public List<Film> findAll() {
 		return filmRepository.findAll();
@@ -77,11 +113,20 @@ public class FilmServiceImpl implements FilmService {
 		return filmOptional.get();
 	}
 
+	/**
+	 * Get {@link Film} titles.
+	 * @return the list of {@link KeyValue} objects containing film's id and title.
+	 */
 	@Override
 	public List<KeyValue<Long, String>> getTitles() {
 		return filmRepository.getTitles();
 	}
 
+	/**
+	 * Get {@link Film} title and number of participant actors.
+	 *
+	 * @return the list of {@link FilmActorPair} DTOs containing film's title and number of participant actors.
+	 */
 	@Override
 	public List<FilmActorPair> getNumOfActorsPerFilm() {
 		return filmRepository.getNumOfActorsPerFilm();
