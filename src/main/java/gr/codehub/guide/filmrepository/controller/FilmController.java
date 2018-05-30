@@ -28,16 +28,19 @@ import gr.codehub.guide.filmrepository.transfer.KeyValue;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Controller servicing all {@link Film} related calls.
+ * Controller serving {@link Film} related requests.
  */
 @RestController
 @Slf4j
 public class FilmController extends AbstractDomainController<Film> {
+	/**
+	 * Service providing access to {@link Film} specific business calls.
+	 */
 	@Autowired
 	FilmService service;
 
 	/**
-	 * Injecting the corresponding business service.
+	 * Declaring service implementation in order to support the execution of common actions.
 	 *
 	 * @return The business service.
 	 */
@@ -84,10 +87,10 @@ public class FilmController extends AbstractDomainController<Film> {
 	}
 
 	/**
-	 * Creates a new {@link Film}.
-	 *
-	 * @param entity the object to use as feed.
-	 * @return the newly created {@link Film}.
+	 * Override default method for creating an {@link Film} object in order to demonstrate URL rewriting.
+	 * @param entity The entity's body without id.
+
+	 * @return the persisted {@link Film} object.
 	 */
 	@Override
 	@PostMapping("/films/v1")

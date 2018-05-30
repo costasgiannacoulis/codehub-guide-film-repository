@@ -8,6 +8,12 @@ import lombok.Value;
  */
 @Value
 public class ActorFilmsPair {
+	/**
+	 * Actor's name.
+	 */
 	String actor;
+	/**
+	 * Number of films he/she has participated in.
+	 */
 	Long numOfFilms;
 }

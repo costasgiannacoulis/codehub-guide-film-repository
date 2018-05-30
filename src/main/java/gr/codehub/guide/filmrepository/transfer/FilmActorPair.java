@@ -7,6 +7,12 @@ import lombok.Value;
  */
 @Value
 public class FilmActorPair {
+	/**
+	 * Film's title.
+	 */
 	String title;
+	/**
+	 * Number of actors per film.
+	 */
 	Long numOfActors;
 }

@@ -2,6 +2,8 @@ package gr.codehub.guide.filmrepository.exception;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,21 @@ import lombok.Value;
 @RequiredArgsConstructor
 @ToString
 public class ApiError {
+	/**
+	 * When the error happened.
+	 */
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private final LocalDateTime timestamp = LocalDateTime.now();
+	/**
+	 * The {@link HttpStatus} to return for this error.
+	 */
 	private final Integer status;
+	/**
+	 * Error's message.
+	 */
 	private final String message;
+	/**
+	 * The initial path that triggered the flow whose execution has thrown the exception.
+	 */
 	private final String path;
 }

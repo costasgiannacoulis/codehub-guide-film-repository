@@ -13,15 +13,24 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The Language entity.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 public class Language implements Serializable {
+	/**
+	 * The Language's unique id.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "languageSequence")
 	@SequenceGenerator(name = "languageSequence", sequenceName = "language_seq", allocationSize = 1)
 	private Long id;
 
+	/**
+	 * The Language's name.
+	 */
 	@Size(min = 3, message = "Language title should be at least 3 characters long")
 	@Column(length = 50, nullable = false)
 	private String name;
