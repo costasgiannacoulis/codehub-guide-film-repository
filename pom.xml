@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.2.RELEASE</version>
+		<version>2.1.0.RC1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -38,10 +38,14 @@
 		<java.version>1.8</java.version>
 		<maven-source-plugin.versio>3.0.1</maven-source-plugin.versio>
 		<maven-jgit-buildnumber-plugin.version>1.2.10</maven-jgit-buildnumber-plugin.version>
-		<maven-scm-plugin.version>1.9.5</maven-scm-plugin.version>
-		<jackson-datatype-hibernate5>2.9.5</jackson-datatype-hibernate5>
-		<disruptor.version>3.4.2</disruptor.version>
+		<maven-scm-plugin.version>1.11.1</maven-scm-plugin.version>
+		<jackson-datatype-hibernate5>2.9.7</jackson-datatype-hibernate5>
+		<disruptor-maven-plugin.version>3.4.2</disruptor-maven-plugin.version>
 		<native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
+		<flyway-maven-plugin.version>5.2.1</flyway-maven-plugin.version>
+		<maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
+		<maven-jar-plugin.version>2.3.2</maven-jar-plugin.version>
+		<h2.version>1.4.197</h2.version>
 	</properties>
 
 	<dependencies>
@@ -60,11 +64,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
-		<!-- Asynchronous Logging -->
+		<!--
+		Asynchronous Logging @see https://logging.apache.org/log4j/2.x/manual/async.html
+		Hint:
+		Don't forget to set system property
+		-Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+     	to make all loggers asynchronous
+		-->
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>
-			<version>${disruptor.version}</version>
+			<version>${disruptor-maven-plugin.version}</version>
 		</dependency>
 
 		<dependency>
@@ -137,7 +147,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>${maven-enforcer-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>enforce-maven</id>
@@ -210,7 +220,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>${maven-jar-plugin.version}</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -243,7 +253,7 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>5.0.7</version>
+				<version>${flyway-maven-plugin.version}</version>
 				<!--
 				We need to define following parameters in a single place and reuse them here and in application
 				.properties
@@ -261,7 +271,7 @@
 					<dependency>
 						<groupId>com.h2database</groupId>
 						<artifactId>h2</artifactId>
-						<version>1.4.196</version>
+						<version>${h2.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -291,6 +301,7 @@
 			</testResource>
 		</testResources>
 	</build>
+
 	<profiles>
 		<profile>
 			<id>java9</id>
@@ -305,4 +316,42 @@
 			</dependencies>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
