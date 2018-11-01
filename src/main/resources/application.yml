@@ -17,6 +17,10 @@ spring:
         enabled: false
     restart:
       additional-paths: ''
+      enabled: true
+      log-condition-evaluation-delta: false
+    # Whether to enable development property defaults.
+    add-properties: true
   output:
     ansi:
       enabled: always
