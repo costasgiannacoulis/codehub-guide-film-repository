@@ -26,6 +26,7 @@ import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.service.AbstractDomainService;
 import gr.codehub.guide.filmrepository.service.ActorService;
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
+import io.swagger.annotations.ApiOperation;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -66,6 +67,8 @@ public class ActorController extends AbstractDomainController<Actor> {
 	 */
 	@Override
 	@PostMapping
+	@ApiOperation(value = "Create an Actor", notes = "Creates a new Actor entity based on a validated input JSON " +
+		"document")
 	public ResponseEntity create(@Valid @RequestBody final Actor entity) {
 		final Actor savedEntity = getDomainService().create(entity);
 		final URI location = ServletUriComponentsBuilder
