@@ -9,8 +9,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,6 +26,8 @@ import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.service.AbstractDomainService;
 import gr.codehub.guide.filmrepository.service.ActorService;
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * Controller serving {@link Actor} related requests.
@@ -54,8 +59,9 @@ public class ActorController extends AbstractDomainController<Actor> {
 
 	/**
 	 * Override default method for creating an {@link Actor} object in order to demonstrate URL rewriting.
+	 *
 	 * @param entity The entity's body without id.
-
+	 *
 	 * @return the persisted {@link Actor} object.
 	 */
 	@Override
@@ -71,8 +77,30 @@ public class ActorController extends AbstractDomainController<Actor> {
 	}
 
 	/**
-	 * Return the {@link Actor actors} along with the number of films they have participated in.
+	 * Gets the entity matching the given id using HATEOS
+	 *
+	 * @param id The id who's entity to look for.
+	 *
+	 * @return the entity.
+	 */
+	@GetMapping(path = "/{id}", headers = "action=getUsingHateos")
+	public Resource<Actor> getUsingHateos(@PathVariable("id") final Long id) {
+		final Actor actorFound = getDomainService().get(id);
 
+		final Resource<Actor> actorResource = new Resource<>(actorFound);
+
+		final ControllerLinkBuilder linkMe = linkTo(ControllerLinkBuilder.methodOn(getClass()).get(id));
+		final ControllerLinkBuilder linkTo = linkTo(ControllerLinkBuilder.methodOn(getClass()).findAll());
+
+		actorResource.add(linkMe.withRel("self"));
+		actorResource.add(linkTo.withRel("all-actors"));
+
+		return actorResource;
+	}
+
+	/**
+	 * Return the {@link Actor actors} along with the number of films they have participated in.
+	 *
 	 * @return the list of {@link ActorFilmsPair} DTOs containing actor's fullname and total number of films.
 	 */
 	@GetMapping(headers = "action=getNumOfFilmsPerActor")
@@ -82,23 +110,24 @@ public class ActorController extends AbstractDomainController<Actor> {
 
 	/**
 	 * Method demonstrating locale definition during content retrieval.
-
+	 *
 	 * @param locale the client's {@link Locale}.
+	 *
 	 * @return requested content respecting client's {@link Locale} or default {@link Locale} if specific locale is
-	 * missing from implementation.
+	 * 	missing from implementation.
 	 */
 	@GetMapping(headers = "action=getLocalizedContentWithHeaders")
 	public String getLocalizedContentWithHeaders(@RequestHeader(name = "Accept-Language", required = false) final
-	Locale locale) {
+												 Locale locale) {
 		return messageSource.getMessage("film.goodmorning", null, locale);
 	}
 
 	/**
 	 * Method demonstrating locale definition during content retrieval in conjunction with the use of
 	 * {@link AcceptHeaderLocaleResolver}.
-
+	 *
 	 * @return requested content respecting client's {@link Locale} or default {@link Locale} if specific locale is
-	 * missing from implementation.
+	 * 	missing from implementation.
 	 */
 	@GetMapping(headers = "action=geLocalizedContent")
 	public String getLocalizedContent() {
