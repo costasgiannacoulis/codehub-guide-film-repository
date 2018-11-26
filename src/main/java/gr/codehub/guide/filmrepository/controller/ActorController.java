@@ -97,8 +97,7 @@ public class ActorController extends AbstractDomainController<Actor> {
 		final ControllerLinkBuilder linkMe = linkTo(ControllerLinkBuilder.methodOn(getClass()).get(id));
 		final ControllerLinkBuilder linkTo = linkTo(ControllerLinkBuilder.methodOn(getClass()).findAll());
 
-		actorResource.add(linkMe.withRel("self"));
-		actorResource.add(linkTo.withRel("all-actors"));
+		actorResource.add(linkMe.withRel("self"), linkTo.withRel("all-actors"));
 
 		return actorResource;
 	}
