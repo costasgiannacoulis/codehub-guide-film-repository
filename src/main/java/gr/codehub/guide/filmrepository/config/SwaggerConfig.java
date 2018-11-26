@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Swagger 2 configuration
+ * Swagger2 configuration
  */
 @Configuration
 @EnableSwagger2
@@ -28,7 +28,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
 			.select()
-			.apis(RequestHandlerSelectors.basePackage("gr.codehub.guide.filmrepository.controller"))
+			.apis(RequestHandlerSelectors.any())
 			.paths(PathSelectors.any())
 			.build().apiInfo(getApiInfo());
 	}
@@ -42,7 +42,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
 		return new ApiInfoBuilder()
 			.title("Swagger API Doc")
 			.description("More description about the API")
-			.version("1.0.0")
+			.license("Apache License Version 2.0")
+			.version("2018.1.0")
 			.build();
 	}
 
