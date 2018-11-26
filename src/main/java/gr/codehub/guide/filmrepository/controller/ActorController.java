@@ -26,6 +26,7 @@ import gr.codehub.guide.filmrepository.model.Actor;
 import gr.codehub.guide.filmrepository.service.AbstractDomainService;
 import gr.codehub.guide.filmrepository.service.ActorService;
 import gr.codehub.guide.filmrepository.transfer.ActorFilmsPair;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -35,6 +36,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @RestController
 @RequestMapping("/actors")
+@Api()
 public class ActorController extends AbstractDomainController<Actor> {
 	/**
 	 * Object giving access to resource bundles.
